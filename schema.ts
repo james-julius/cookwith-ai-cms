@@ -1,4 +1,3 @@
-
 // Welcome to your schema
 //   Schema driven development is Keystone's modus operandi
 //
@@ -51,9 +50,9 @@ export const lists: Lists = {
 
       password: password({ validation: { isRequired: true } }),
 
-      // we can use this field to see what Posts this User has authored
-      //   more on that in the Post list below
-      posts: relationship({ ref: 'Post.author', many: true }),
+      // we can use this field to see what Articles this User has authored
+      //   more on that in the Article list below
+      articles: relationship({ ref: 'Article.author', many: true }),
 
       recipes: relationship({ ref: 'Recipe.author', many: true }),
 
@@ -123,14 +122,14 @@ export const lists: Lists = {
       recipes: relationship({ ref: 'Recipe.collections', many: true }),
     },
   }),
-  Post: list({
+  Article: list({
     // WARNING
     //   for this starter project, anyone can create, query, update and delete anything
     //   if you want to prevent random people on the internet from accessing your data,
     //   you can find out more at https://keystonejs.com/docs/guides/auth-and-access-control
     access: allowAll,
 
-    // this is the fields for our Post list
+    // this is the fields for our Article list
     fields: {
       title: text({ validation: { isRequired: true } }),
 
@@ -149,10 +148,10 @@ export const lists: Lists = {
         dividers: true,
       }),
 
-      // with this field, you can set a User as the author for a Post
+      // with this field, you can set a User as the author for an Article
       author: relationship({
         // we could have used 'User', but then the relationship would only be 1-way
-        ref: 'User.posts',
+        ref: 'User.articles',
 
         // this is some customisations for changing how this will look in the AdminUI
         ui: {
@@ -163,17 +162,17 @@ export const lists: Lists = {
           inlineConnect: true,
         },
 
-        // a Post can only have one author
+        // an Article can only have one author
         //   this is the default, but we show it here for verbosity
         many: false,
       }),
 
-      // with this field, you can add some Tags to Posts
+      // with this field, you can add some Tags to Articles
       tags: relationship({
         // we could have used 'Tag', but then the relationship would only be 1-way
-        ref: 'Tag.posts',
+        ref: 'Tag.articles',
 
-        // a Post can have many Tags, not just one
+        // an Article can have many Tags, not just one
         many: true,
 
         // this is some customisations for changing how this will look in the AdminUI
@@ -205,8 +204,8 @@ export const lists: Lists = {
     // this is the fields for our Tag list
     fields: {
       name: text(),
-      // this can be helpful to find out all the Posts associated with a Tag
-      posts: relationship({ ref: 'Post.tags', many: true }),
+      // this can be helpful to find out all the Articles associated with a Tag
+      articles: relationship({ ref: 'Article.tags', many: true }),
     },
   }),
 };
