@@ -60,9 +60,9 @@ var lists = {
         isIndexed: "unique"
       }),
       password: (0, import_fields.password)({ validation: { isRequired: true } }),
-      // we can use this field to see what Posts this User has authored
-      //   more on that in the Post list below
-      posts: (0, import_fields.relationship)({ ref: "Post.author", many: true }),
+      // we can use this field to see what Articles this User has authored
+      //   more on that in the Article list below
+      articles: (0, import_fields.relationship)({ ref: "Article.author", many: true }),
       recipes: (0, import_fields.relationship)({ ref: "Recipe.author", many: true }),
       createdAt: (0, import_fields.timestamp)({
         // this sets the timestamp to Date.now() when the user is first created
@@ -130,13 +130,13 @@ var lists = {
       recipes: (0, import_fields.relationship)({ ref: "Recipe.collections", many: true })
     }
   }),
-  Post: (0, import_core.list)({
+  Article: (0, import_core.list)({
     // WARNING
     //   for this starter project, anyone can create, query, update and delete anything
     //   if you want to prevent random people on the internet from accessing your data,
     //   you can find out more at https://keystonejs.com/docs/guides/auth-and-access-control
     access: import_access.allowAll,
-    // this is the fields for our Post list
+    // this is the fields for our Article list
     fields: {
       title: (0, import_fields.text)({ validation: { isRequired: true } }),
       // the document field can be used for making rich editable content
@@ -153,10 +153,10 @@ var lists = {
         links: true,
         dividers: true
       }),
-      // with this field, you can set a User as the author for a Post
+      // with this field, you can set a User as the author for an Article
       author: (0, import_fields.relationship)({
         // we could have used 'User', but then the relationship would only be 1-way
-        ref: "User.posts",
+        ref: "User.articles",
         // this is some customisations for changing how this will look in the AdminUI
         ui: {
           displayMode: "cards",
@@ -165,15 +165,15 @@ var lists = {
           linkToItem: true,
           inlineConnect: true
         },
-        // a Post can only have one author
+        // an Article can only have one author
         //   this is the default, but we show it here for verbosity
         many: false
       }),
-      // with this field, you can add some Tags to Posts
+      // with this field, you can add some Tags to Articles
       tags: (0, import_fields.relationship)({
         // we could have used 'Tag', but then the relationship would only be 1-way
-        ref: "Tag.posts",
-        // a Post can have many Tags, not just one
+        ref: "Tag.articles",
+        // an Article can have many Tags, not just one
         many: true,
         // this is some customisations for changing how this will look in the AdminUI
         ui: {
@@ -201,8 +201,8 @@ var lists = {
     // this is the fields for our Tag list
     fields: {
       name: (0, import_fields.text)(),
-      // this can be helpful to find out all the Posts associated with a Tag
-      posts: (0, import_fields.relationship)({ ref: "Post.tags", many: true })
+      // this can be helpful to find out all the Articles associated with a Tag
+      articles: (0, import_fields.relationship)({ ref: "Article.tags", many: true })
     }
   })
 };

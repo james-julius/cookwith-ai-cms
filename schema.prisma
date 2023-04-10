@@ -16,7 +16,7 @@ model User {
   name      String    @default("")
   email     String    @unique @default("")
   password  String
-  posts     Post[]    @relation("Post_author")
+  articles  Article[] @relation("Article_author")
   recipes   Recipe[]  @relation("Recipe_author")
   createdAt DateTime? @default(now())
 }
@@ -81,19 +81,19 @@ model Collection {
   recipes     Recipe[] @relation("Collection_recipes")
 }
 
-model Post {
+model Article {
   id       String  @id @default(cuid())
   title    String  @default("")
   content  String  @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  author   User?   @relation("Post_author", fields: [authorId], references: [id])
+  author   User?   @relation("Article_author", fields: [authorId], references: [id])
   authorId String? @map("author")
-  tags     Tag[]   @relation("Post_tags")
+  tags     Tag[]   @relation("Article_tags")
 
   @@index([authorId])
 }
 
 model Tag {
-  id    String @id @default(cuid())
-  name  String @default("")
-  posts Post[] @relation("Post_tags")
+  id       String    @id @default(cuid())
+  name     String    @default("")
+  articles Article[] @relation("Article_tags")
 }

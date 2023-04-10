@@ -6,8 +6,8 @@ type User {
   name: String
   email: String
   password: PasswordState
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
-  postsCount(where: PostWhereInput! = {}): Int
+  articles(where: ArticleWhereInput! = {}, orderBy: [ArticleOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ArticleWhereUniqueInput): [Article!]
+  articlesCount(where: ArticleWhereInput! = {}): Int
   recipes(where: RecipeWhereInput! = {}, orderBy: [RecipeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RecipeWhereUniqueInput): [Recipe!]
   recipesCount(where: RecipeWhereInput! = {}): Int
   createdAt: DateTime
@@ -31,7 +31,7 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
-  posts: PostManyRelationFilter
+  articles: ArticleManyRelationFilter
   recipes: RecipeManyRelationFilter
   createdAt: DateTimeNullableFilter
 }
@@ -75,10 +75,10 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
-input PostManyRelationFilter {
-  every: PostWhereInput
-  some: PostWhereInput
-  none: PostWhereInput
+input ArticleManyRelationFilter {
+  every: ArticleWhereInput
+  some: ArticleWhereInput
+  none: ArticleWhereInput
 }
 
 input RecipeManyRelationFilter {
@@ -114,16 +114,16 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
-  posts: PostRelateToManyForUpdateInput
+  articles: ArticleRelateToManyForUpdateInput
   recipes: RecipeRelateToManyForUpdateInput
   createdAt: DateTime
 }
 
-input PostRelateToManyForUpdateInput {
-  disconnect: [PostWhereUniqueInput!]
-  set: [PostWhereUniqueInput!]
-  create: [PostCreateInput!]
-  connect: [PostWhereUniqueInput!]
+input ArticleRelateToManyForUpdateInput {
+  disconnect: [ArticleWhereUniqueInput!]
+  set: [ArticleWhereUniqueInput!]
+  create: [ArticleCreateInput!]
+  connect: [ArticleWhereUniqueInput!]
 }
 
 input RecipeRelateToManyForUpdateInput {
@@ -142,14 +142,14 @@ input UserCreateInput {
   name: String
   email: String
   password: String
-  posts: PostRelateToManyForCreateInput
+  articles: ArticleRelateToManyForCreateInput
   recipes: RecipeRelateToManyForCreateInput
   createdAt: DateTime
 }
 
-input PostRelateToManyForCreateInput {
-  create: [PostCreateInput!]
-  connect: [PostWhereUniqueInput!]
+input ArticleRelateToManyForCreateInput {
+  create: [ArticleCreateInput!]
+  connect: [ArticleWhereUniqueInput!]
 }
 
 input RecipeRelateToManyForCreateInput {
@@ -530,27 +530,27 @@ input CollectionCreateInput {
   recipes: RecipeRelateToManyForCreateInput
 }
 
-type Post {
+type Article {
   id: ID!
   title: String
-  content: Post_content_Document
+  content: Article_content_Document
   author: User
   tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
   tagsCount(where: TagWhereInput! = {}): Int
 }
 
-type Post_content_Document {
+type Article_content_Document {
   document(hydrateRelationships: Boolean! = false): JSON!
 }
 
-input PostWhereUniqueInput {
+input ArticleWhereUniqueInput {
   id: ID
 }
 
-input PostWhereInput {
-  AND: [PostWhereInput!]
-  OR: [PostWhereInput!]
-  NOT: [PostWhereInput!]
+input ArticleWhereInput {
+  AND: [ArticleWhereInput!]
+  OR: [ArticleWhereInput!]
+  NOT: [ArticleWhereInput!]
   id: IDFilter
   title: StringFilter
   author: UserWhereInput
@@ -563,12 +563,12 @@ input TagManyRelationFilter {
   none: TagWhereInput
 }
 
-input PostOrderByInput {
+input ArticleOrderByInput {
   id: OrderDirection
   title: OrderDirection
 }
 
-input PostUpdateInput {
+input ArticleUpdateInput {
   title: String
   content: JSON
   author: UserRelateToOneForUpdateInput
@@ -582,12 +582,12 @@ input TagRelateToManyForUpdateInput {
   connect: [TagWhereUniqueInput!]
 }
 
-input PostUpdateArgs {
-  where: PostWhereUniqueInput!
-  data: PostUpdateInput!
+input ArticleUpdateArgs {
+  where: ArticleWhereUniqueInput!
+  data: ArticleUpdateInput!
 }
 
-input PostCreateInput {
+input ArticleCreateInput {
   title: String
   content: JSON
   author: UserRelateToOneForCreateInput
@@ -602,8 +602,8 @@ input TagRelateToManyForCreateInput {
 type Tag {
   id: ID!
   name: String
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
-  postsCount(where: PostWhereInput! = {}): Int
+  articles(where: ArticleWhereInput! = {}, orderBy: [ArticleOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ArticleWhereUniqueInput): [Article!]
+  articlesCount(where: ArticleWhereInput! = {}): Int
 }
 
 input TagWhereUniqueInput {
@@ -616,7 +616,7 @@ input TagWhereInput {
   NOT: [TagWhereInput!]
   id: IDFilter
   name: StringFilter
-  posts: PostManyRelationFilter
+  articles: ArticleManyRelationFilter
 }
 
 input TagOrderByInput {
@@ -626,7 +626,7 @@ input TagOrderByInput {
 
 input TagUpdateInput {
   name: String
-  posts: PostRelateToManyForUpdateInput
+  articles: ArticleRelateToManyForUpdateInput
 }
 
 input TagUpdateArgs {
@@ -636,7 +636,7 @@ input TagUpdateArgs {
 
 input TagCreateInput {
   name: String
-  posts: PostRelateToManyForCreateInput
+  articles: ArticleRelateToManyForCreateInput
 }
 
 """
@@ -675,12 +675,12 @@ type Mutation {
   updateCollections(data: [CollectionUpdateArgs!]!): [Collection]
   deleteCollection(where: CollectionWhereUniqueInput!): Collection
   deleteCollections(where: [CollectionWhereUniqueInput!]!): [Collection]
-  createPost(data: PostCreateInput!): Post
-  createPosts(data: [PostCreateInput!]!): [Post]
-  updatePost(where: PostWhereUniqueInput!, data: PostUpdateInput!): Post
-  updatePosts(data: [PostUpdateArgs!]!): [Post]
-  deletePost(where: PostWhereUniqueInput!): Post
-  deletePosts(where: [PostWhereUniqueInput!]!): [Post]
+  createArticle(data: ArticleCreateInput!): Article
+  createArticles(data: [ArticleCreateInput!]!): [Article]
+  updateArticle(where: ArticleWhereUniqueInput!, data: ArticleUpdateInput!): Article
+  updateArticles(data: [ArticleUpdateArgs!]!): [Article]
+  deleteArticle(where: ArticleWhereUniqueInput!): Article
+  deleteArticles(where: [ArticleWhereUniqueInput!]!): [Article]
   createTag(data: TagCreateInput!): Tag
   createTags(data: [TagCreateInput!]!): [Tag]
   updateTag(where: TagWhereUniqueInput!, data: TagUpdateInput!): Tag
@@ -725,9 +725,9 @@ type Query {
   collections(where: CollectionWhereInput! = {}, orderBy: [CollectionOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CollectionWhereUniqueInput): [Collection!]
   collection(where: CollectionWhereUniqueInput!): Collection
   collectionsCount(where: CollectionWhereInput! = {}): Int
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
-  post(where: PostWhereUniqueInput!): Post
-  postsCount(where: PostWhereInput! = {}): Int
+  articles(where: ArticleWhereInput! = {}, orderBy: [ArticleOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ArticleWhereUniqueInput): [Article!]
+  article(where: ArticleWhereUniqueInput!): Article
+  articlesCount(where: ArticleWhereInput! = {}): Int
   tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
   tag(where: TagWhereUniqueInput!): Tag
   tagsCount(where: TagWhereInput! = {}): Int
